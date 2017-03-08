@@ -5,7 +5,7 @@ metadata:
   labels: 
     {{- include "newegg-nginx.release_labels" . | indent 4 }}
 spec:
-  replicas: 1
+  replicas: {{ default 1 .Values.Replicas }}
   template:
     metadata:
       labels:
@@ -13,8 +13,12 @@ spec:
     spec:
       containers:
         - name: hello-world
-          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
-          imagePullPolicy: Always
+          image: "{{.Values.Image}}:{{.Values.ImageTag}}"
+          imagePullPolicy: "{{.Values.ImagePullPolicy}}"
           ports:
-            - containerPort: 80
+            - containerPort: {{.Values.ContainerPort}}
               protocol: TCP
+          resources:
+            requests:
+              cpu: "{{.Values.Cpu}}"
+              memory: "{{.Values.Memory}}"
