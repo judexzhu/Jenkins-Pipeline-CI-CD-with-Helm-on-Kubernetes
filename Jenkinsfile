@@ -54,7 +54,7 @@ node {
                 
                 // At this point Nginx is running
                 echo "Docker Container is running"
-                input 'Do you want to process the test? Local image and container will be removed after the test!'    
+                input 'Do you want to process the test? Containers will be removed after the test!'    
                 // this pipeline is using 3 tests 
                 // by setting it to more than 3 you can test the error handling and see the pipeline Stage View error message
                 MAX_TESTS = 3
