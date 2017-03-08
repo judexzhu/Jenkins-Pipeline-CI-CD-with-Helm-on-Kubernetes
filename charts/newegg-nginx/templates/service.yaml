@@ -5,7 +5,7 @@ metadata:
   labels: 
     {{- include "newegg-nginx.release_labels" . | indent 4 }}
 spec:
-  type: NodePort
+  type: {{ default "ClusterIP" .Values.ServiceType | quote }}
   ports:
   - port: {{.Values.ServicePort}}
     targetPort: {{.Values.ContainerPort}}
