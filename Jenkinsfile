@@ -5,7 +5,7 @@ node {
     // Setup the Docker Registry (Docker Hub) + Credentials 
     registry_url = "https://index.docker.io/v1/" // Docker Hub
     docker_creds_id = "judexzhu-DockerHub" // name of the Jenkins Credentials ID
-    build_tag = "Production" // default tag to push for to the registry
+    build_tag = "1.0" // default tag to push for to the registry
     
     stage 'Checking out GitHub Repo'
     git url: 'https://github.com/judexzhu/Docker-Jenkins.git'
