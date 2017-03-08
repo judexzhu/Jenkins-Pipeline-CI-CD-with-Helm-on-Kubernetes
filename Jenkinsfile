@@ -15,7 +15,6 @@ def helmLint(String chart_dir) {
 
 def helmDeploy(Map args) {
     //configure helm client and confirm tiller process is installed
-    helmConfig()
 
     if (args.dry_run) {
         println "Running dry-run deployment"
