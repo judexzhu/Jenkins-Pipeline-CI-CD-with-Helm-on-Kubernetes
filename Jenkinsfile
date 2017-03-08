@@ -8,36 +8,26 @@ node {
     build_tag = "testing" // default tag to push for to the registry
     
     stage 'Checking out GitHub Repo'
-    git url: 'https://github.com/judexzhu/Docker-Jenkins'
+    git url: 'https://github.com/judexzhu/Docker-Jenkins.git'
     
-    stage 'Building Django Container for Docker Hub'
+    stage 'Building Nginx Container for Docker Hub'
     docker.withRegistry("${registry_url}", "${docker_creds_id}") {
     
         // Set up the container to build 
-        maintainer_name = "jayjohnson"
-        container_name = "django-slack-sphinx"
-        docker_env_file = "testing.env"
+        maintainer_name = "judexzhu"
+        container_name = "nginx-test"
         
-        // Read testing environment file:
-        docker_env_values = readProperties file: "./${docker_env_file}"
-
-        // Assign variables based off the env file
-        default_root_volume = "${docker_env_values.ENV_DEFAULT_ROOT_VOLUME}"
-        doc_source_dir = "${docker_env_values.ENV_DOC_SOURCE_DIR}"
-        doc_output_dir = "${docker_env_values.ENV_DOC_OUTPUT_DIR}"
-        static_output_dir = "${docker_env_values.ENV_STATIC_OUTPUT_DIR}"
-        media_dir = "${docker_env_values.ENV_MEDIA_DIR}"
 
         stage "Building"
-        echo "Building Django with docker.build(${maintainer_name}/${container_name}:${build_tag})"
-        container = docker.build("${maintainer_name}/${container_name}:${build_tag}", 'django')
+        echo "Building Nginx with docker.build(${maintainer_name}/${container_name}:${build_tag})"
+        container = docker.build("${maintainer_name}/${container_name}:${build_tag}", '')
         try {
             
             // Start Testing
-            stage "Running Django container"
+            stage "Running Nginx container"
             
             // Run the container with the env file, mounted volumes and the ports:
-            docker.image("${maintainer_name}/${container_name}:${build_tag}").withRun("--name=${container_name} --env-file ${docker_env_file} -e ENV_SERVER_MODE=DEV -v ${default_root_volume}:${default_root_volume} -v ${doc_source_dir}:${doc_source_dir} -v ${doc_output_dir}:${doc_output_dir} -v ${static_output_dir}:${static_output_dir} -v ${media_dir}:${media_dir} -p 82:80 -p 444:443")  { c ->
+            docker.image("${maintainer_name}/${container_name}:${build_tag}").withRun("--name=${container_name}  -p 80:80 ")  { c ->
                    
                 // wait for the django server to be ready for testing
                 // the 'waitUntil' block needs to return true to stop waiting
@@ -51,13 +41,13 @@ node {
                     echo "Wait Results(${wait_results})"
                     if ("${wait_results}" == "1")
                     {
-                        echo "Django is listening on port 80"
+                        echo "Nginx is listening on port 80"
                         sh "rm -f /tmp/wait_results"
                         return true
                     }
                     else
                     {
-                        echo "Django is not listening on port 80 yet"
+                        echo "Nginx is not listening on port 80 yet"
                         return false
                     }
                 } // end of waitUntil
@@ -76,7 +66,7 @@ node {
                     if (test_num == 0 ) 
                     {
                         // Test we can download the home page from the running django docker container
-                        sh "docker exec -t ${container_name} curl -s http://localhost/home/ | grep Welcome | wc -l | tr -d '\n' > /tmp/test_results" 
+                        sh "docker exec -t ${container_name} curl -s http://localhost | grep Welcome | wc -l | tr -d '\n' > /tmp/test_results" 
                         expected_results = 1
                     }
                     else if (test_num == 1)
@@ -130,8 +120,8 @@ node {
     docker.withRegistry("${registry_url}", "${docker_creds_id}") {
         
         // Set up the container to build
-        maintainer_name = "jayjohnson"
-        container_name = "django-nginx"
+        maintainer_name = "judexzhu"
+        container_name = "nginx"
      
         stage "Building Container"
         echo "Building nginx with docker.build(${maintainer_name}/${container_name}:${build_tag})"
