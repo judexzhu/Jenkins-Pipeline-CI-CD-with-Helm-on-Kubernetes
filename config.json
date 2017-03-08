@@ -1,0 +1,14 @@
+{
+  "app": {
+    "name": "newegg-nginx",
+    "replicas": "1",
+    "cpu": "10m",
+    "memory": "128Mi"
+  },
+  "pipeline": {
+      "enabled": true,
+      "library": {
+        "branch": "master"
+      }
+  }
+}
