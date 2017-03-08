@@ -35,7 +35,7 @@ node {
                 // https://issues.jenkins-ci.org/browse/JENKINS-29037
                 //
                 waitUntil {
-                    sh "docker exec -t ${container_name} netstat -apn | grep 80 | grep LISTEN | wc -l | tr -d '\n' > /tmp/wait_results"
+                    sh "ss -antup:wq! | grep 80 | grep LISTEN | wc -l | tr -d '\n' > /tmp/wait_results"
                     wait_results = readFile '/tmp/wait_results'
 
                     echo "Wait Results(${wait_results})"
