@@ -1,0 +1,15 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ template "newegg-nginx.full_name" . }}
+  labels: 
+    {{- include "newegg-nginx.release_labels" . | indent 4 }}
+spec:
+  rules:
+  - host: newegg-nginx.buyabs.corp
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: {{ template "newegg-nginx.full_name" . }}
+          servicePort: 80
