@@ -20,7 +20,7 @@ node {
 
         stage "Building"
         echo "Building Nginx with docker.build(${maintainer_name}/${container_name}:${build_tag})"
-        container = docker.build("${maintainer_name}/${container_name}:${build_tag}", '')
+        container = docker.build("${maintainer_name}/${container_name}:${build_tag}", '.')
         try {
             
             // Start Testing
