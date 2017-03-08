@@ -1,11 +1,50 @@
 #!groovy
 
+def kubectlTest() {
+    // Test that kubectl can correctly communication with the Kubernetes API
+    echo "running kubectl test"
+    sh "kubectl get nodes"
+
+}
+
+def helmLint(String chart_dir) {
+    // lint helm chart
+    sh "helm lint ${chart_dir}"
+
+}
+
+def helmDeploy(Map args) {
+    //configure helm client and confirm tiller process is installed
+    helmConfig()
+
+    if (args.dry_run) {
+        println "Running dry-run deployment"
+
+        sh "helm upgrade --dry-run --install ${args.name} ${args.chart_dir} --set Replicas=${args.replicas},Cpu=${args.cpu},Memory=${args.memory} --namespace=${args.name}"
+    } else {
+        println "Running deployment"
+        sh "helm upgrade --install ${args.name} ${args.chart_dir} --set Replicas=${args.replicas},Cpu=${args.cpu},Memory=${args.memory} --namespace=${args.name}"
+
+        echo "Application ${args.name} successfully deployed. Use helm status ${args.name} to check"
+    }
+}
+
+
+
+
 node {
     
     // Setup the Docker Registry (Docker Hub) + Credentials 
     registry_url = "https://index.docker.io/v1/" // Docker Hub
     docker_creds_id = "judexzhu-DockerHub" // name of the Jenkins Credentials ID
     build_tag = "latest" // default tag to push for to the registry
+    
+    def pwd = pwd()
+    def chart_dir = "${pwd}/charts/newegg-nginx"
+    
+    def inputFile = readFile('config.json')
+    def config = new groovy.json.JsonSlurperClassic().parseText(inputFile)
+    println "pipeline config ==> ${config}"
     
     stage 'Checking out GitHub Repo'
     git url: 'https://github.com/judexzhu/Docker-Jenkins.git'
@@ -116,8 +155,35 @@ node {
         
         currentBuild.result = 'SUCCESS'
     }
-    
+    stage ('helm test') {
+        
+    // run helm chart linter
+    helmLint(chart_dir)
 
+    // run dry-run helm chart installation
+    helmDeploy(
+      dry_run       : true,
+      name          : config.app.name,
+      chart_dir     : chart_dir,
+      replicas      : config.app.replicas,
+      cpu           : config.app.cpu,
+      memory        : config.app.memory
+    )
+
+  }
+    stage ('helm deploy') {
+      
+      // Deploy using Helm chart
+      helmDeploy(
+        dry_run       : false,
+        name          : config.app.name,
+        chart_dir     : chart_dir,
+        replicas      : config.app.replicas,
+        cpu           : config.app.cpu,
+        memory        : config.app.memory
+      )
+
+    }
     
     ///////////////////////////////////////
     //
