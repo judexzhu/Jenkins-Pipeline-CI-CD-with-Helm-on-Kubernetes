@@ -9,7 +9,7 @@ def kubectlTest() {
 
 def helmLint(String chart_dir) {
     // lint helm chart
-    sh "helm lint ${chart_dir}"
+    sh "/usr/local/bin/helm lint ${chart_dir}"
 
 }
 
