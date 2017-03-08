@@ -5,7 +5,7 @@ node {
     // Setup the Docker Registry (Docker Hub) + Credentials 
     registry_url = "https://index.docker.io/v1/" // Docker Hub
     docker_creds_id = "judexzhu-DockerHub" // name of the Jenkins Credentials ID
-    build_tag = "1.0" // default tag to push for to the registry
+    build_tag = "latest" // default tag to push for to the registry
     
     stage 'Checking out GitHub Repo'
     git url: 'https://github.com/judexzhu/Docker-Jenkins.git'
@@ -52,9 +52,9 @@ node {
                     }
                 } // end of waitUntil
                 
-                // At this point Django is running
+                // At this point Nginx is running
                 echo "Docker Container is running"
-                    
+                input 'Do you want to process the test? Local image and container will be removed after the test!'    
                 // this pipeline is using 3 tests 
                 // by setting it to more than 3 you can test the error handling and see the pipeline Stage View error message
                 MAX_TESTS = 3
@@ -92,7 +92,6 @@ node {
                     }
                     
                     // Now validate the results match the expected results
-                    input 'Do you want to clean the test env and results?'
                     stage "Test(${test_num}) - Validate Results"
                     test_results = readFile '/tmp/test_results'
                     echo "Test(${test_num}) Results($test_results) == Expected(${expected_results})"
