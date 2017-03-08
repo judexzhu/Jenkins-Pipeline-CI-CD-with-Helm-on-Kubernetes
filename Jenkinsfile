@@ -111,6 +111,7 @@ node {
         }
         
         stage "Pushing"
+        input 'Do you approve Pushing?'
         container.push()
         
         currentBuild.result = 'SUCCESS'
