@@ -80,7 +80,7 @@ node {
                     else if (test_num == 2)
                     {
                         // Test there's nothing established on the port since nginx is not running:
-                        sh "docker exec -t ${container_name} netstat -apn | grep 80 | grep ESTABLISHED | wc -l | tr -d '\n' > /tmp/test_results"
+                        sh "docker exec -t ${container_name} ss -apn | grep 80 | grep ESTABLISHED | wc -l | tr -d '\n' > /tmp/test_results"
                         expected_results = 0
                     }
                     else
@@ -92,6 +92,7 @@ node {
                     }
                     
                     // Now validate the results match the expected results
+                    input 'Do you want to clean the test env and results?'
                     stage "Test(${test_num}) - Validate Results"
                     test_results = readFile '/tmp/test_results'
                     echo "Test(${test_num}) Results($test_results) == Expected(${expected_results})"
