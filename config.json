@@ -3,6 +3,7 @@
     "name": "newegg-nginx",
     "replicas": "1",
     "cpu": "10m",
+    "versiontag": "latest",
     "memory": "128Mi"
   },
   "pipeline": {
