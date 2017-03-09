@@ -153,6 +153,7 @@ node {
         container.push()
         
         currentBuild.result = 'SUCCESS'
+        
     }
     
     stage ('helm test') {
@@ -171,6 +172,7 @@ node {
        )
 
     }
+    
     stage ('helm deploy') {
       
       // Deploy using Helm chart
