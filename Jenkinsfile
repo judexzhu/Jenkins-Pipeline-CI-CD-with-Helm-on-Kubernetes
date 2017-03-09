@@ -166,7 +166,7 @@ node {
         dry_run       : true,
         name          : config.app.name,
         chart_dir     : chart_dir,
-        tag   : config.app.tag,
+        tag           : ${build_tag},
         replicas      : config.app.replicas,
         cpu           : config.app.cpu,
         memory        : config.app.memory
@@ -181,7 +181,7 @@ node {
         dry_run       : false,
         name          : config.app.name,
         chart_dir     : chart_dir,
-        tag   : config.app.tag,
+        tag           : ${build_tag},
         replicas      : config.app.replicas,
         cpu           : config.app.cpu,
         memory        : config.app.memory
