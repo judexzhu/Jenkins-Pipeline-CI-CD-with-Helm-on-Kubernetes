@@ -154,22 +154,23 @@ node {
         
         currentBuild.result = 'SUCCESS'
     }
+    
     stage ('helm test') {
         
     // run helm chart linter
-    helmLint(chart_dir)
+      helmLint(chart_dir)
 
     // run dry-run helm chart installation
-    helmDeploy(
-      dry_run       : true,
-      name          : config.app.name,
-      chart_dir     : chart_dir,
-      replicas      : config.app.replicas,
-      cpu           : config.app.cpu,
-      memory        : config.app.memory
-    )
+      helmDeploy(
+        dry_run       : true,
+        name          : config.app.name,
+        chart_dir     : chart_dir,
+        replicas      : config.app.replicas,
+        cpu           : config.app.cpu,
+        memory        : config.app.memory
+       )
 
-  }
+    }
     stage ('helm deploy') {
       
       // Deploy using Helm chart
