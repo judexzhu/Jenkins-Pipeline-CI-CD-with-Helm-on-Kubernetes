@@ -12,3 +12,4 @@ Cpu: "10m"
 Memory: "128Mi"
 ContainerPort: 80
 ServicePort: 80
+DomainName: newegg-nginx
