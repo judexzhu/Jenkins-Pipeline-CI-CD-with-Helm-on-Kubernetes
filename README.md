@@ -15,7 +15,7 @@ In the last Kubernetes Videos I made, I mentioned about how to CI/CD in the Kube
 
 And as I said before , no MIS/IT need to directly access the K8S
 
-
+![Jenkins Pipeline](/relative/path/to/img.jpg?raw=true "Jenkins Pipeline with Helm on Kubernetes")
  
 
 
