@@ -21,11 +21,17 @@ And as I said before , no MIS/IT need to directly access the K8S
 
 
 For  this we need 
+
 1.	Git repo( I used Github for convenience)
+
 2.	Jenkins Master Server 
+
 3.	Docker runner
+
 4.	Docker repo(I used Dockerhub)
+
 5.	Helm
+
 6.	Kubernetes 
 
 So I download the official Jenkins docker image , and custom it (add sudoer on Jenkins and install docker-ce on it , it’s a debian )
