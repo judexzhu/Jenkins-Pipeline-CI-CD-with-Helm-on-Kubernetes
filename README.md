@@ -15,7 +15,7 @@ In the last Kubernetes Videos I made, I mentioned about how to CI/CD in the Kube
 
 And as I said before , no MIS/IT need to directly access the K8S
 
-![Jenkins Pipeline](Jenkins-Pipeline-CI-CD-with-Helm-on-Kubernetes/Jenkins/Jenkins_helm_pipeline.png?raw=true "Jenkins Pipeline with Helm on Kubernetes")
+![Jenkins Pipeline](https://raw.github/com/judexzhu/Jenkins-Pipeline-CI-CD-with-Helm-on-Kubernetes/Jenkins/Jenkins_helm_pipeline.png?raw=true "Jenkins Pipeline with Helm on Kubernetes")
  
 
 
