@@ -6,7 +6,7 @@ metadata:
     {{- include "newegg-nginx.release_labels" . | indent 4 }}
 spec:
   rules:
-  - host: newegg-nginx.buyabs.corp
+  - host: {{.Values.DomainName}}.buyabs.corp
     http:
       paths:
       - path: /
