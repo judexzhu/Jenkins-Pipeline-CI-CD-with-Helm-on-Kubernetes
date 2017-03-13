@@ -42,7 +42,7 @@ node {
     def chart_dir = "${pwd}/charts/newegg-nginx"
         
     stage 'Checking out GitHub Repo'
-    git url: 'https://github.com/judexzhu/Docker-Jenkins.git'
+    git url: 'https://github.com/judexzhu/Jenkins-Pipeline-CI-CD-with-Helm-on-Kubernetes.git'
     
     def inputFile = readFile('config.json')
     def config = new groovy.json.JsonSlurperClassic().parseText(inputFile)
